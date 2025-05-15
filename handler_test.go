@@ -3,10 +3,11 @@ package socketio
 import (
 	"testing"
 
-	"github.com/googollee/go-engine.io"
-	. "github.com/smartystreets/goconvey/convey"
 	"io"
 	"net/http"
+
+	. "github.com/smartystreets/goconvey/convey"
+	engineio "github.com/sunmi-OS/go-engine.io"
 )
 
 type FakeBroadcastAdaptor struct{}
@@ -83,12 +84,11 @@ func TestHandler(t *testing.T) {
 		var handlerCalled bool
 		baseHandlerInstance := newBaseHandler("some:event", &FakeBroadcastAdaptor{})
 		socketInstance := newSocket(&FakeSockConnection{}, baseHandlerInstance)
-		c, _ := newCaller(func () { handlerCalled = true })
+		c, _ := newCaller(func() { handlerCalled = true })
 		decoder := newDecoder(saver)
 
 		socketInstance.acks[0] = c
-		socketInstance.onPacket(decoder, &packet{Type:_ACK, Id:0, Data:"[]", NSP:"/"})
-
+		socketInstance.onPacket(decoder, &packet{Type: _ACK, Id: 0, Data: "[]", NSP: "/"})
 
 		So(len(socketInstance.acks), ShouldEqual, 0)
 		So(handlerCalled, ShouldBeTrue)
@@ -100,11 +100,11 @@ func TestHandler(t *testing.T) {
 		var handlerCalled bool
 		baseHandlerInstance := newBaseHandler("some:event", &FakeBroadcastAdaptor{})
 		socketInstance := newSocket(&FakeSockConnection{}, baseHandlerInstance)
-		c, _ := newCaller(func () { handlerCalled = true })
+		c, _ := newCaller(func() { handlerCalled = true })
 		decoder := newDecoder(saver)
 
 		socketInstance.acks[0] = c
-		socketInstance.onPacket(decoder, &packet{Type:_BINARY_ACK, Id:0, Data:"[]", NSP:"/"})
+		socketInstance.onPacket(decoder, &packet{Type: _BINARY_ACK, Id: 0, Data: "[]", NSP: "/"})
 
 		So(len(socketInstance.acks), ShouldEqual, 0)
 		So(handlerCalled, ShouldBeTrue)
