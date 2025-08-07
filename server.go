@@ -1,7 +1,10 @@
 package socketio
 
 import (
+	"fmt"
+	"log"
 	"net/http"
+	"runtime"
 	"time"
 
 	engineio "github.com/sunmi-OS/go-engine.io"
@@ -106,7 +109,22 @@ func (s *Server) loop() {
 		}
 		s := newSocket(conn, s.baseHandler)
 		go func(s *socket) {
+			Recovery()
 			s.loop()
 		}(s)
 	}
+}
+
+// Recovery middleware recovery
+func Recovery() {
+	defer func() {
+		if err := recover(); err != nil {
+			const size = 64 << 10
+			stack := make([]byte, size)
+			stack = stack[:runtime.Stack(stack, false)]
+			errStr := fmt.Sprintf("%v", err)
+			panicInfo := time.Now().Format("2006-01-02 15:04:05") + errStr + string(stack)
+			log.Printf("[server panic recovered] %s\n", panicInfo)
+		}
+	}()
 }
