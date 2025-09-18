@@ -168,7 +168,7 @@ func (h *socketHandler) onPacket(decoder *decoder, packet *packet) ([]interface{
 			}
 		}
 	}
-	logs := fmt.Sprintf("connId : %s ,onPacket packet.Type:%v ,packet.NSP:%s ,packet.Id:%d ,packet.Data:%v", logSoConnId, packet.Type, packet.NSP, packet.Id, packet.Data)
+	logs := fmt.Sprintf("connId : %s ,onPacket packet.Type:%v ,packet.NSP:%s ,packet.Id:%d ,packet.Data:%v,message:%s", logSoConnId, packet.Type, packet.NSP, packet.Id, packet.Data, message)
 	fmt.Println(logs)
 	// ====== testing end ================
 	h.evMu.Lock()
