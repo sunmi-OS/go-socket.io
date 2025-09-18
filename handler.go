@@ -159,6 +159,18 @@ func (h *socketHandler) onPacket(decoder *decoder, packet *packet) ([]interface{
 			message = decoder.Message()
 		}
 	}
+	// ===== testing log =====
+	logSoConnId := ""
+	if h != nil {
+		if h.socket != nil {
+			if h.socket.conn != nil {
+				logSoConnId = h.socket.conn.Id()
+			}
+		}
+	}
+	logs := fmt.Sprintf("connId : %s ,onPacket packet.Type:%v ,packet.NSP:%s ,packet.Id:%d ,packet.Data:%v", logSoConnId, packet.Type, packet.NSP, packet.Id, packet.Data)
+	fmt.Println(logs)
+	// ====== testing end ================
 	h.evMu.Lock()
 	c, ok := h.events[message]
 	h.evMu.Unlock()
